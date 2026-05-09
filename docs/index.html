@@ -314,13 +314,25 @@
 <div class="particles" id="particles"></div>
 
 <!-- ─── Navbar ─── -->
+<!--
+  Responsive layout (resolved on a per-breakpoint basis):
+    < lg (under 1024 px)
+      Logo · Lang · Burger
+      The full nav, plus Login (auth widget) and Download CTA, live
+      inside the slide-down mobile panel below.
+    lg (1024–1279 px)
+      Logo · 8 nav links (gap-5, smaller font) · Lang · Login pill
+      Download CTA hidden — duplicates the #download link in the bar.
+    xl (1280 px+)
+      Logo · 8 nav links (gap-6) · Lang · Login pill · Download CTA
+-->
 <nav class="fixed top-0 inset-x-0 z-50 glass relative">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <a href="#" class="flex items-center gap-3 group">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+        <a href="#" class="flex items-center gap-3 group flex-shrink-0">
             <img src="img/logo.jpg" alt="Logo" class="w-9 h-9 brand-logo group-hover:scale-110 transition-transform">
             <span class="text-lg font-bold tracking-tight">Anubis<span class="text-brand-400">World</span></span>
         </a>
-        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+        <div class="hidden lg:flex items-center gap-5 xl:gap-6 text-[13px] xl:text-sm font-medium text-gray-400">
             <a href="#servers"   class="hover:text-brand-300 transition" data-i18n="nav_servers"></a>
             <a href="#features"  class="hover:text-brand-300 transition" data-i18n="nav_features"></a>
             <a href="#reviews"   class="hover:text-brand-300 transition" data-i18n="nav_reviews"></a>
@@ -330,8 +342,8 @@
             <a href="#faq"       class="hover:text-brand-300 transition" data-i18n="nav_faq"></a>
             <a href="#community" class="hover:text-brand-300 transition" data-i18n="nav_community"></a>
         </div>
-        <div class="flex items-center gap-3">
-            <!-- Language switcher -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <!-- Language switcher — visible on every breakpoint. -->
             <div class="lang-wrap relative">
                 <button id="langBtn" class="flex items-center gap-1.5 text-sm text-gray-400 hover:text-brand-300 transition px-2 py-1 rounded-lg hover:bg-brand-500/10">
                     <span id="langFlag">🇷🇺</span>
@@ -346,29 +358,78 @@
                     <button onclick="setLang('pl')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">🇵🇱 Polski</button>
                 </div>
             </div>
+            <!-- Desktop auth pill (lg+). The mobile-menu instance below
+                 covers the same role for sub-1024 viewports — both are
+                 the same Web Component, sharing one Supabase client via
+                 the `anubis-need-supabase` event so they stay in sync. -->
             <anubis-auth
-                class="hidden sm:inline-block"
+                class="hidden lg:inline-block"
                 supabase-url="https://ckfinpywlpllvhvzagnw.supabase.co"
                 supabase-key="sb_publishable_Bl6csDnCJ5LIJsIsCafMYQ_5zwLTgvR"
                 lang="ru"></anubis-auth>
-            <a href="#download" class="hidden sm:inline-flex btn-glow items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition shadow-lg shadow-brand-600/30">
+            <a href="#download" class="hidden xl:inline-flex btn-glow items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition shadow-lg shadow-brand-600/30">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/></svg>
                 <span data-i18n="nav_download"></span>
             </a>
-            <button id="menuBtn" class="md:hidden text-gray-400 hover:text-brand-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <button id="menuBtn" aria-label="Menu" aria-expanded="false" class="lg:hidden w-10 h-10 -mr-1 rounded-lg text-gray-300 hover:text-white hover:bg-brand-500/10 transition flex items-center justify-center">
+                <svg id="menuBtnIcon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
         </div>
     </div>
-    <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm font-medium text-gray-400">
-        <a href="#servers"   class="block py-2 hover:text-brand-300 transition" data-i18n="nav_servers"></a>
-        <a href="#features"  class="block py-2 hover:text-brand-300 transition" data-i18n="nav_features"></a>
-        <a href="#reviews"   class="block py-2 hover:text-brand-300 transition" data-i18n="nav_reviews"></a>
-        <a href="#download"  class="block py-2 hover:text-brand-300 transition" data-i18n="nav_download"></a>
-        <a href="#cabinet"   class="block py-2 hover:text-brand-300 transition" data-i18n="nav_cabinet"></a>
-        <a href="#donate"    class="block py-2 hover:text-brand-300 transition" data-i18n="nav_donate"></a>
-        <a href="#faq"       class="block py-2 hover:text-brand-300 transition" data-i18n="nav_faq"></a>
-        <a href="#community" class="block py-2 hover:text-brand-300 transition" data-i18n="nav_community"></a>
+    <!--
+      Mobile slide-down panel — shown for everything below `lg`. Hosts:
+        · 8 nav links with hover bg + larger tap area (py-3),
+        · a divider,
+        · auth widget pill,
+        · download CTA filling full width.
+      Closing animations: see the inline <style> block by the modals.
+    -->
+    <div id="mobileMenu" class="hidden lg:hidden border-t border-brand-500/15 px-4 py-3 space-y-1">
+        <a href="#servers"   class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_servers"></span>
+        </a>
+        <a href="#features"  class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_features"></span>
+        </a>
+        <a href="#reviews"   class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_reviews"></span>
+        </a>
+        <a href="#download"  class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_download"></span>
+        </a>
+        <a href="#cabinet"   class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_cabinet"></span>
+        </a>
+        <a href="#donate"    class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_donate"></span>
+        </a>
+        <a href="#faq"       class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_faq"></span>
+        </a>
+        <a href="#community" class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-brand-300 hover:bg-brand-500/10 transition">
+            <span class="w-1 h-1 rounded-full bg-brand-400/60"></span>
+            <span data-i18n="nav_community"></span>
+        </a>
+
+        <!-- Account + Download — pinned to the bottom of the panel. -->
+        <div class="pt-3 mt-2 border-t border-brand-500/15 flex flex-col gap-3">
+            <anubis-auth
+                supabase-url="https://ckfinpywlpllvhvzagnw.supabase.co"
+                supabase-key="sb_publishable_Bl6csDnCJ5LIJsIsCafMYQ_5zwLTgvR"
+                lang="ru"
+                class="block"></anubis-auth>
+            <a href="#download" class="btn-glow w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 text-white font-semibold px-5 py-3 rounded-xl text-sm shadow-lg shadow-brand-600/30">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/></svg>
+                <span data-i18n="nav_download"></span>
+            </a>
+        </div>
     </div>
 </nav>
 
@@ -859,6 +920,19 @@
        open, so override the open state without touching `hidden`.
        Reused for both cabinet and donations modals. */
     .cabinet-modal:not(.hidden) { display: flex; }
+
+    /* Tiny slide-in animation on the mobile-nav panel — gives the
+       burger menu a more app-like feel. We toggle `hidden`, so the
+       animation plays each time the panel goes from display:none to
+       block. No keyframes for the closing direction (which would
+       require not-hidden state). */
+    #mobileMenu:not(.hidden) {
+        animation: aw-mobile-menu-in 0.18s ease-out;
+    }
+    @keyframes aw-mobile-menu-in {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 </style>
 
 <!-- ─── i18n + Scripts ─── -->
@@ -1295,12 +1369,40 @@ function setLang(lang) {
     applyLang(lang);
 })();
 
-document.getElementById('menuBtn').addEventListener('click', () => {
-    document.getElementById('mobileMenu').classList.toggle('hidden');
-});
-document.querySelectorAll('#mobileMenu a').forEach(a => {
-    a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
-});
+// Burger menu — opens the slide-down panel and swaps the icon to an X.
+// Closing on link click is handled by the per-link listener below; we
+// also close on Escape and on outside click.
+(function() {
+    const btn      = document.getElementById('menuBtn');
+    const menu     = document.getElementById('mobileMenu');
+    const iconHost = document.getElementById('menuBtnIcon');
+    if (!btn || !menu || !iconHost) return;
+    const ICON_BURGER = '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>';
+    const ICON_CLOSE  = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>';
+    const setOpen = (open) => {
+        menu.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        iconHost.innerHTML = open ? ICON_CLOSE : ICON_BURGER;
+    };
+    btn.addEventListener('click', () => {
+        setOpen(menu.classList.contains('hidden'));
+    });
+    // Tapping any link inside the menu hides it — feels native on mobile.
+    document.querySelectorAll('#mobileMenu a').forEach(a => {
+        a.addEventListener('click', () => setOpen(false));
+    });
+    // ESC closes — mirrors the modal pattern.
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !menu.classList.contains('hidden')) setOpen(false);
+    });
+    // Click outside the menu (and outside the burger button itself) closes.
+    document.addEventListener('click', e => {
+        if (menu.classList.contains('hidden')) return;
+        const inMenu = menu.contains(e.target);
+        const inBtn  = btn.contains(e.target);
+        if (!inMenu && !inBtn) setOpen(false);
+    });
+})();
 
 // Modal overlays for #cabinet and #donate. Anchors with those hashes
 // open the matching modal instead of scroll-jumping to a section. The
