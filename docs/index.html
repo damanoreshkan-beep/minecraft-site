@@ -690,27 +690,6 @@
     </div>
 </section>
 
-<!-- ─── Personal cabinet ─── -->
-<!-- Hosts the <anubis-cabinet> widget. The widget itself shows a
-     sign-in prompt for visitors who haven't authenticated yet, so we
-     can render it unconditionally — no extra auth wiring needed. -->
-<section id="cabinet" class="relative py-24">
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-950/15 to-transparent pointer-events-none"></div>
-    <div class="relative max-w-3xl mx-auto px-4 fade-section">
-        <div class="text-center mb-10">
-            <span class="inline-block text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="cabinet_badge"></span>
-            <h2 class="text-3xl sm:text-5xl font-bold mb-6" data-i18n-html="cabinet_title"></h2>
-            <p class="text-gray-400 max-w-xl mx-auto leading-relaxed" data-i18n="cabinet_desc"></p>
-        </div>
-        <div class="glass rounded-3xl border border-brand-500/20 overflow-hidden">
-            <anubis-cabinet
-                supabase-url="https://ckfinpywlpllvhvzagnw.supabase.co"
-                supabase-key="sb_publishable_Bl6csDnCJ5LIJsIsCafMYQ_5zwLTgvR"
-                lang="ru"></anubis-cabinet>
-        </div>
-    </div>
-</section>
-
 <!-- ─── FAQ ─── -->
 <section id="faq" class="relative py-24">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-950/15 to-transparent pointer-events-none"></div>
@@ -810,6 +789,37 @@
         <div data-i18n="footer_text"></div>
     </div>
 </footer>
+
+<!-- ─── Cabinet modal ─── -->
+<!-- Hidden by default. Opened by any anchor with href="#cabinet" (the
+     navbar links keep their hash so the URL is shareable). The widget
+     itself shows a sign-in prompt for visitors who aren't logged in,
+     so the same markup works for everyone. -->
+<div id="cabinetModal" class="cabinet-modal hidden fixed inset-0 z-[60] items-start sm:items-center justify-center overflow-y-auto bg-surface-950/85 backdrop-blur-sm p-4 sm:p-8">
+    <div class="relative w-full max-w-5xl glass rounded-3xl border border-brand-500/25 p-5 sm:p-7 my-8">
+        <button id="cabinetClose"
+                aria-label="Close"
+                class="absolute top-3 right-3 w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-brand-500/15 transition flex items-center justify-center z-10">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="text-center mb-6">
+            <span class="inline-block text-brand-400 text-xs font-semibold tracking-widest uppercase mb-2" data-i18n="cabinet_badge"></span>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2" data-i18n-html="cabinet_title"></h2>
+            <p class="text-sm text-gray-400 max-w-xl mx-auto leading-relaxed" data-i18n="cabinet_desc"></p>
+        </div>
+        <anubis-cabinet
+            supabase-url="https://ckfinpywlpllvhvzagnw.supabase.co"
+            supabase-key="sb_publishable_Bl6csDnCJ5LIJsIsCafMYQ_5zwLTgvR"
+            lang="ru"></anubis-cabinet>
+    </div>
+</div>
+<style>
+    /* Tailwind's `hidden` toggles `display:none`. We want flex when
+       open, so override the open state without touching `hidden`. */
+    .cabinet-modal:not(.hidden) { display: flex; }
+</style>
 
 <!-- ─── i18n + Scripts ─── -->
 <script>
@@ -1241,6 +1251,41 @@ document.getElementById('menuBtn').addEventListener('click', () => {
 document.querySelectorAll('#mobileMenu a').forEach(a => {
     a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
 });
+
+// Cabinet modal — hijack any link to #cabinet and open the overlay
+// instead of jumping to a section. We keep the URL hash so deep links
+// still work (page-load handler at the bottom auto-opens the modal
+// when reloading on /#cabinet).
+(function() {
+    const modal = document.getElementById('cabinetModal');
+    if (!modal) return;
+    const open  = () => {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        // Strip the hash so re-clicking the link opens the modal again.
+        if (location.hash === '#cabinet') {
+            history.replaceState(null, '', location.pathname + location.search);
+        }
+    };
+    document.querySelectorAll('a[href="#cabinet"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            open();
+            // Restore hash for deep-linkability without scroll-jumping.
+            history.replaceState(null, '', '#cabinet');
+        });
+    });
+    document.getElementById('cabinetClose').addEventListener('click', close);
+    modal.addEventListener('click', e => { if (e.target === modal) close(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+    });
+    if (location.hash === '#cabinet') open();
+})();
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
