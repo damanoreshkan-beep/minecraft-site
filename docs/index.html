@@ -302,6 +302,11 @@
          shows a sign-in prompt for visitors who aren't authenticated.
          Source: https://github.com/damanoreshkan-beep/anubis-cabinet -->
     <script type="module" src="https://damanoreshkan-beep.github.io/anubis-cabinet/anubis-cabinet.js"></script>
+    <!-- AnubisWorld donations — VIP / Premium / Ultra tiers + Mono /
+         Donatello / DonatePay links. Visible only to signed-in users
+         (the widget itself gates with a sign-in prompt).
+         Source: https://github.com/damanoreshkan-beep/anubis-payments -->
+    <script type="module" src="https://damanoreshkan-beep.github.io/anubis-payments/anubis-payments.js"></script>
 </head>
 <body class="bg-surface-950 text-white antialiased">
 
@@ -321,6 +326,7 @@
             <a href="#reviews"   class="hover:text-brand-300 transition" data-i18n="nav_reviews"></a>
             <a href="#download"  class="hover:text-brand-300 transition" data-i18n="nav_download"></a>
             <a href="#cabinet"   class="hover:text-brand-300 transition" data-i18n="nav_cabinet"></a>
+            <a href="#donate"    class="hover:text-brand-300 transition" data-i18n="nav_donate"></a>
             <a href="#faq"       class="hover:text-brand-300 transition" data-i18n="nav_faq"></a>
             <a href="#community" class="hover:text-brand-300 transition" data-i18n="nav_community"></a>
         </div>
@@ -360,6 +366,7 @@
         <a href="#reviews"   class="block py-2 hover:text-brand-300 transition" data-i18n="nav_reviews"></a>
         <a href="#download"  class="block py-2 hover:text-brand-300 transition" data-i18n="nav_download"></a>
         <a href="#cabinet"   class="block py-2 hover:text-brand-300 transition" data-i18n="nav_cabinet"></a>
+        <a href="#donate"    class="block py-2 hover:text-brand-300 transition" data-i18n="nav_donate"></a>
         <a href="#faq"       class="block py-2 hover:text-brand-300 transition" data-i18n="nav_faq"></a>
         <a href="#community" class="block py-2 hover:text-brand-300 transition" data-i18n="nav_community"></a>
     </div>
@@ -753,7 +760,7 @@
         <span class="inline-block text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="nav_community"></span>
         <h2 class="text-3xl sm:text-5xl font-bold mb-12" data-i18n-html="community_title"></h2>
 
-        <div class="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        <div class="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <a href="https://discord.gg/gQa9fxJuTa" target="_blank"
                class="glass rounded-2xl p-8 card-hover flex flex-col items-center gap-4 group border border-violet-500/10 hover:border-violet-500/30 transition-colors">
                 <div class="w-16 h-16 rounded-2xl bg-[#5865F2]/15 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -773,6 +780,17 @@
                 <div>
                     <div class="font-bold text-lg mb-1">Telegram</div>
                     <div class="text-sm text-gray-400" data-i18n="community_telegram_sub"></div>
+                </div>
+            </a>
+
+            <a href="https://www.youtube.com/@l_ANUB1S_l" target="_blank"
+               class="glass rounded-2xl p-8 card-hover flex flex-col items-center gap-4 group border border-rose-500/10 hover:border-rose-500/30 transition-colors">
+                <div class="w-16 h-16 rounded-2xl bg-[#FF0000]/15 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-[#FF0000]" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </div>
+                <div>
+                    <div class="font-bold text-lg mb-1">YouTube</div>
+                    <div class="text-sm text-gray-400" data-i18n="community_youtube_sub"></div>
                 </div>
             </a>
         </div>
@@ -815,9 +833,31 @@
             lang="ru"></anubis-cabinet>
     </div>
 </div>
+
+<!-- ─── Donations modal ─── -->
+<!-- Same modal pattern as the cabinet — opens via any anchor with
+     href="#donate". The widget itself gates with a sign-in prompt for
+     visitors without a session. -->
+<div id="donateModal" class="cabinet-modal hidden fixed inset-0 z-[60] items-start sm:items-center justify-center overflow-y-auto bg-surface-950/85 backdrop-blur-sm p-4 sm:p-8">
+    <div class="relative w-full max-w-5xl glass rounded-3xl border border-brand-500/25 p-5 sm:p-7 my-8">
+        <button id="donateClose"
+                aria-label="Close"
+                class="absolute top-3 right-3 w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-brand-500/15 transition flex items-center justify-center z-10">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <anubis-payments
+            supabase-url="https://ckfinpywlpllvhvzagnw.supabase.co"
+            supabase-key="sb_publishable_Bl6csDnCJ5LIJsIsCafMYQ_5zwLTgvR"
+            lang="ru"></anubis-payments>
+    </div>
+</div>
+
 <style>
     /* Tailwind's `hidden` toggles `display:none`. We want flex when
-       open, so override the open state without touching `hidden`. */
+       open, so override the open state without touching `hidden`.
+       Reused for both cabinet and donations modals. */
     .cabinet-modal:not(.hidden) { display: flex; }
 </style>
 
@@ -863,9 +903,11 @@ const i18n = {
         community_title: 'Присоединяйся к <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">сообществу</span>',
         community_discord_sub: "Чат, голос, ивенты",
         community_telegram_sub: "Новости и обновления",
+        community_youtube_sub: "Видео, обзоры, гайды",
         nav_reviews: "Отзывы",
         nav_faq: "FAQ",
         nav_cabinet: "Кабинет",
+        nav_donate: "Поддержать",
         cabinet_badge: "Личный кабинет",
         cabinet_title: 'Скин, плащ и <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">аккаунт</span>',
         cabinet_desc: "Загрузите свой скин и плащ — отобразится в игре сразу после логина. Управление паролем и профилем здесь же.",
@@ -938,9 +980,11 @@ const i18n = {
         community_title: 'Приєднуйся до <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">спільноти</span>',
         community_discord_sub: "Чат, голос, івенти",
         community_telegram_sub: "Новини та оновлення",
+        community_youtube_sub: "Відео, огляди, гайди",
         nav_reviews: "Відгуки",
         nav_faq: "FAQ",
         nav_cabinet: "Кабінет",
+        nav_donate: "Підтримати",
         cabinet_badge: "Особистий кабінет",
         cabinet_title: 'Скін, плащ і <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">акаунт</span>',
         cabinet_desc: "Завантаж свій скін та плащ — відобразяться в грі одразу після логіну. Керування паролем і профілем тут же.",
@@ -1013,9 +1057,11 @@ const i18n = {
         community_title: 'Join the <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">Community</span>',
         community_discord_sub: "Chat, voice, events",
         community_telegram_sub: "News & updates",
+        community_youtube_sub: "Videos, reviews, guides",
         nav_reviews: "Reviews",
         nav_faq: "FAQ",
         nav_cabinet: "Cabinet",
+        nav_donate: "Donate",
         cabinet_badge: "Personal cabinet",
         cabinet_title: 'Skin, cape & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">account</span>',
         cabinet_desc: "Upload your skin and cape — they show up in-game the moment you sign in. Password and profile management lives here too.",
@@ -1088,9 +1134,11 @@ const i18n = {
         community_title: 'Tritt der <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">Community</span> bei',
         community_discord_sub: "Chat, Voice, Events",
         community_telegram_sub: "News & Updates",
+        community_youtube_sub: "Videos, Reviews, Guides",
         nav_reviews: "Bewertungen",
         nav_faq: "FAQ",
         nav_cabinet: "Konto",
+        nav_donate: "Spenden",
         cabinet_badge: "Persönliches Konto",
         cabinet_title: 'Skin, Umhang & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">Account</span>',
         cabinet_desc: "Lade deinen Skin und Umhang hoch — werden sofort nach dem Login im Spiel angezeigt. Passwort- und Profilverwaltung gibt es ebenfalls hier.",
@@ -1163,9 +1211,11 @@ const i18n = {
         community_title: 'Dołącz do <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">społeczności</span>',
         community_discord_sub: "Czat, głos, eventy",
         community_telegram_sub: "Aktualności i aktualizacje",
+        community_youtube_sub: "Filmy, recenzje, poradniki",
         nav_reviews: "Opinie",
         nav_faq: "FAQ",
         nav_cabinet: "Konto",
+        nav_donate: "Wsparcie",
         cabinet_badge: "Panel gracza",
         cabinet_title: 'Skin, peleryna i <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">konto</span>',
         cabinet_desc: "Wgraj swój skin i pelerynę — pojawią się w grze zaraz po zalogowaniu. Zarządzanie hasłem i profilem również tutaj.",
@@ -1226,7 +1276,7 @@ function applyLang(lang) {
     // Forward locale to both widgets. Site uses 'ua' for Ukrainian;
     // widgets expect 'uk'. Auth and cabinet share the same convention.
     const widgetLang = lang === 'ua' ? 'uk' : lang;
-    document.querySelectorAll('anubis-auth, anubis-cabinet').forEach(el => {
+    document.querySelectorAll('anubis-auth, anubis-cabinet, anubis-payments').forEach(el => {
         el.setAttribute('lang', widgetLang);
     });
 }
@@ -1252,12 +1302,12 @@ document.querySelectorAll('#mobileMenu a').forEach(a => {
     a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
 });
 
-// Cabinet modal — hijack any link to #cabinet and open the overlay
-// instead of jumping to a section. We keep the URL hash so deep links
-// still work (page-load handler at the bottom auto-opens the modal
-// when reloading on /#cabinet).
-(function() {
-    const modal = document.getElementById('cabinetModal');
+// Modal overlays for #cabinet and #donate. Anchors with those hashes
+// open the matching modal instead of scroll-jumping to a section. The
+// hash stays in the URL so deep links still work (the page-load
+// handler below auto-opens whichever modal matches the hash).
+function setupAnchorModal(hash, modalId, closeBtnId) {
+    const modal = document.getElementById(modalId);
     if (!modal) return;
     const open  = () => {
         modal.classList.remove('hidden');
@@ -1266,26 +1316,27 @@ document.querySelectorAll('#mobileMenu a').forEach(a => {
     const close = () => {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
-        // Strip the hash so re-clicking the link opens the modal again.
-        if (location.hash === '#cabinet') {
+        if (location.hash === hash) {
             history.replaceState(null, '', location.pathname + location.search);
         }
     };
-    document.querySelectorAll('a[href="#cabinet"]').forEach(a => {
+    document.querySelectorAll(`a[href="${hash}"]`).forEach(a => {
         a.addEventListener('click', e => {
             e.preventDefault();
             open();
-            // Restore hash for deep-linkability without scroll-jumping.
-            history.replaceState(null, '', '#cabinet');
+            history.replaceState(null, '', hash);
         });
     });
-    document.getElementById('cabinetClose').addEventListener('click', close);
+    const closeBtn = document.getElementById(closeBtnId);
+    if (closeBtn) closeBtn.addEventListener('click', close);
     modal.addEventListener('click', e => { if (e.target === modal) close(); });
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
     });
-    if (location.hash === '#cabinet') open();
-})();
+    if (location.hash === hash) open();
+}
+setupAnchorModal('#cabinet', 'cabinetModal', 'cabinetClose');
+setupAnchorModal('#donate',  'donateModal',  'donateClose');
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
