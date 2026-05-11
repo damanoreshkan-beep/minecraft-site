@@ -307,6 +307,12 @@
          (the widget itself gates with a sign-in prompt).
          Source: https://github.com/damanoreshkan-beep/anubis-payments -->
     <script type="module" src="https://damanoreshkan-beep.github.io/anubis-payments/anubis-payments.js"></script>
+    <!-- AnubisWorld launcher download cards — fetches the latest
+         GitHub release of `anubis-launcher` and renders Windows /
+         Linux AppImage / Arch Linux cards plus a collapsible "Other
+         formats" row. Cached in localStorage for 1h.
+         Source: https://github.com/damanoreshkan-beep/anubis-download -->
+    <script type="module" src="https://damanoreshkan-beep.github.io/anubis-download/anubis-download.js"></script>
 </head>
 <body class="bg-surface-950 text-white antialiased">
 
@@ -709,52 +715,22 @@
 </section>
 
 <!-- ─── Download ─── -->
+<!-- Static install card replaced with <anubis-download>, which talks
+     to GitHub Releases and renders three primary platform cards
+     (Windows / Linux AppImage / Arch Linux pacman) plus a "Other
+     formats" overflow. localStorage caches the API response for 1h
+     so revisits paint instantly. -->
 <section id="download" class="relative py-24 bg-grid">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-950/20 to-transparent"></div>
-    <div class="relative max-w-3xl mx-auto px-4 text-center fade-section">
-        <span class="inline-block text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="dl_badge"></span>
-        <h2 class="text-3xl sm:text-5xl font-bold mb-6" data-i18n-html="dl_title"></h2>
-        <p class="text-gray-400 max-w-xl mx-auto mb-10 leading-relaxed" data-i18n="dl_desc"></p>
-
-        <div class="glass rounded-3xl p-8 sm:p-10 max-w-lg mx-auto border border-brand-500/20">
-            <div class="flex items-center justify-center gap-4 mb-8">
-                <img src="img/logo.jpg" alt="Launcher" class="w-16 h-16 brand-logo shadow-lg shadow-brand-600/20">
-                <div class="text-left">
-                    <div class="font-bold text-lg">Anubis World Launcher</div>
-                    <div class="text-sm text-brand-600">v1.1.0 &middot; Windows &middot; 105 MB</div>
-                </div>
-            </div>
-            <a href="https://github.com/damanoreshkan-beep/anubis-launcher/releases/latest/download/AnubisWorldLauncher-setup-1.1.0.exe"
-               target="_blank" rel="noopener"
-               class="btn-glow w-full inline-flex items-center justify-center gap-3 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 text-white font-bold px-8 py-4 rounded-2xl text-lg transition shadow-lg shadow-brand-600/30">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/></svg>
-                <span data-i18n="dl_btn"></span>
-            </a>
-            <p class="text-xs text-gray-500 mt-4" data-i18n="dl_requirements"></p>
-
-            <div class="mt-6 pt-5 border-t border-brand-500/15 space-y-3 text-left">
-                <a href="https://www.virustotal.com/gui/file/244cd0af34991c12d79e26651740a63ea8be6a680ea59aa8c81840132ed79293/details"
-                   target="_blank" rel="noopener"
-                   class="flex items-center gap-2 text-xs text-emerald-400 hover:text-emerald-300 transition">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    <span data-i18n="dl_verified"></span>
-                </a>
-                <details class="group">
-                    <summary class="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-300 cursor-pointer list-none transition">
-                        <svg class="w-4 h-4 flex-shrink-0 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        <span data-i18n="dl_warn_title"></span>
-                    </summary>
-                    <p class="text-xs text-gray-500 leading-relaxed mt-3 pl-6" data-i18n-html="dl_warn_body"></p>
-                </details>
-                <details class="group">
-                    <summary class="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-300 cursor-pointer list-none transition">
-                        <svg class="w-4 h-4 flex-shrink-0 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        <span data-i18n="dl_hash_title"></span>
-                    </summary>
-                    <code class="block text-[10px] font-mono text-gray-500 break-all mt-3 pl-6 leading-relaxed">244cd0af34991c12d79e26651740a63ea8be6a680ea59aa8c81840132ed79293</code>
-                </details>
-            </div>
+    <div class="relative max-w-4xl mx-auto px-4 fade-section">
+        <div class="text-center mb-10">
+            <span class="inline-block text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="dl_badge"></span>
+            <h2 class="text-3xl sm:text-5xl font-bold mb-6" data-i18n-html="dl_title"></h2>
+            <p class="text-gray-400 max-w-xl mx-auto leading-relaxed" data-i18n="dl_desc"></p>
         </div>
+        <anubis-download
+            repo="damanoreshkan-beep/anubis-launcher"
+            lang="ru"></anubis-download>
     </div>
 </section>
 
@@ -1350,7 +1326,7 @@ function applyLang(lang) {
     // Forward locale to both widgets. Site uses 'ua' for Ukrainian;
     // widgets expect 'uk'. Auth and cabinet share the same convention.
     const widgetLang = lang === 'ua' ? 'uk' : lang;
-    document.querySelectorAll('anubis-auth, anubis-cabinet, anubis-payments').forEach(el => {
+    document.querySelectorAll('anubis-auth, anubis-cabinet, anubis-payments, anubis-download').forEach(el => {
         el.setAttribute('lang', widgetLang);
     });
 }
