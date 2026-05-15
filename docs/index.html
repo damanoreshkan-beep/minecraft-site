@@ -1416,6 +1416,17 @@ function setupAnchorModal(hash, modalId, closeBtnId) {
 setupAnchorModal('#cabinet', 'cabinetModal', 'cabinetClose');
 setupAnchorModal('#donate',  'donateModal',  'donateClose');
 
+// The cabinet's UnlockCard (capes / HD-skin paywall) dispatches an
+// `anubis-open-donate` CustomEvent when the visitor clicks
+// "Підтримати". On the partner site we treat it as "open the donate
+// modal" — same effect as clicking the navbar Donate link. We mark
+// detail.handled = true so the widget skips its new-tab fallback.
+document.addEventListener('anubis-open-donate', e => {
+    const trigger = document.querySelector('a[href="#donate"]');
+    if (trigger) trigger.click();
+    if (e && e.detail) e.detail.handled = true;
+});
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.15 });
