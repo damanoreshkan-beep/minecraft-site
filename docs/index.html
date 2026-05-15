@@ -271,17 +271,6 @@
             line-height: 1.7;
         }
 
-        /* Аватарки рецензентов — градиентные кружки с инициалами */
-        .review-avatar {
-            width: 3rem; height: 3rem;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,.3);
-        }
-
         /* Accessibility: уважаем prefers-reduced-motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -313,6 +302,12 @@
          formats" row. Cached in localStorage for 1h.
          Source: https://github.com/damanoreshkan-beep/anubis-download -->
     <script type="module" src="https://damanoreshkan-beep.github.io/anubis-download/anubis-download.js"></script>
+    <!-- AnubisWorld player reviews — reads from `public.reviews` in
+         Supabase (anon SELECT via RLS) and renders the same glass-
+         card grid that used to be inlined here. Each card keeps its
+         source language and shows a flag badge in the corner.
+         Source: https://github.com/damanoreshkan-beep/anubis-reviews -->
+    <script type="module" src="https://damanoreshkan-beep.github.io/anubis-reviews/anubis-reviews.js"></script>
 </head>
 <body class="bg-surface-950 text-white antialiased">
 
@@ -629,87 +624,26 @@
 </section>
 
 <!-- ─── Reviews ─── -->
+<!-- Glass-card grid now rendered by <anubis-reviews>. The widget reads
+     from `public.reviews` in our Supabase project (anon SELECT under
+     RLS), reuses the page's .glass + .card-hover classes, and renders
+     a Steve-head avatar per nickname via mc-heads.net. Each card keeps
+     its review in its source language with a flag badge in the corner.
+     Editing happens in the Supabase Studio Table Editor — no redeploy
+     needed. -->
 <section id="reviews" class="relative py-24 bg-grid">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-violet-950/15 to-transparent pointer-events-none"></div>
     <div class="relative max-w-6xl mx-auto px-4">
         <div class="text-center mb-16 fade-section">
-            <span class="inline-block text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3" data-i18n="reviews_badge"></span>
             <h2 class="text-3xl sm:text-5xl font-bold" data-i18n-html="reviews_title"></h2>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 fade-section">
-            <!-- Review 1 -->
-            <div class="glass rounded-2xl p-6 card-hover">
-                <div class="flex items-center gap-1 text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p class="text-gray-300 leading-relaxed mb-5" data-i18n="review_1_text"></p>
-                <div class="flex items-center gap-3 pt-4 border-t border-brand-500/10">
-                    <div class="review-avatar" style="background: linear-gradient(135deg, #a855f7, #22d3ee);">SM</div>
-                    <div>
-                        <div class="font-semibold text-white">SteamPunkMaster</div>
-                        <div class="text-xs text-gray-500" data-i18n="review_1_role"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Review 2 -->
-            <div class="glass rounded-2xl p-6 card-hover">
-                <div class="flex items-center gap-1 text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p class="text-gray-300 leading-relaxed mb-5" data-i18n="review_2_text"></p>
-                <div class="flex items-center gap-3 pt-4 border-t border-brand-500/10">
-                    <div class="review-avatar" style="background: linear-gradient(135deg, #f59e0b, #a855f7);">RQ</div>
-                    <div>
-                        <div class="font-semibold text-white">RedstoneQueen</div>
-                        <div class="text-xs text-gray-500" data-i18n="review_2_role"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Review 3 -->
-            <div class="glass rounded-2xl p-6 card-hover">
-                <div class="flex items-center gap-1 text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p class="text-gray-300 leading-relaxed mb-5" data-i18n="review_3_text"></p>
-                <div class="flex items-center gap-3 pt-4 border-t border-brand-500/10">
-                    <div class="review-avatar" style="background: linear-gradient(135deg, #22d3ee, #0891b2);">XL</div>
-                    <div>
-                        <div class="font-semibold text-white">_xCraftLord</div>
-                        <div class="text-xs text-gray-500" data-i18n="review_3_role"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Review 4 -->
-            <div class="glass rounded-2xl p-6 card-hover">
-                <div class="flex items-center gap-1 text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p class="text-gray-300 leading-relaxed mb-5" data-i18n="review_4_text"></p>
-                <div class="flex items-center gap-3 pt-4 border-t border-brand-500/10">
-                    <div class="review-avatar" style="background: linear-gradient(135deg, #7c3aed, #fbbf24);">NE</div>
-                    <div>
-                        <div class="font-semibold text-white">NerdyEngineer</div>
-                        <div class="text-xs text-gray-500" data-i18n="review_4_role"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Review 5 -->
-            <div class="glass rounded-2xl p-6 card-hover">
-                <div class="flex items-center gap-1 text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p class="text-gray-300 leading-relaxed mb-5" data-i18n="review_5_text"></p>
-                <div class="flex items-center gap-3 pt-4 border-t border-brand-500/10">
-                    <div class="review-avatar" style="background: linear-gradient(135deg, #c084fc, #f59e0b);">AF</div>
-                    <div>
-                        <div class="font-semibold text-white">AnubisFan_42</div>
-                        <div class="text-xs text-gray-500" data-i18n="review_5_role"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Review 6 -->
-            <div class="glass rounded-2xl p-6 card-hover">
-                <div class="flex items-center gap-1 text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p class="text-gray-300 leading-relaxed mb-5" data-i18n="review_6_text"></p>
-                <div class="flex items-center gap-3 pt-4 border-t border-brand-500/10">
-                    <div class="review-avatar" style="background: linear-gradient(135deg, #06b6d4, #a855f7);">MH</div>
-                    <div>
-                        <div class="font-semibold text-white">ModpackHunter</div>
-                        <div class="text-xs text-gray-500" data-i18n="review_6_role"></div>
-                    </div>
-                </div>
-            </div>
+        <div class="fade-section">
+            <anubis-reviews
+                supabase-url="https://ckfinpywlpllvhvzagnw.supabase.co"
+                supabase-key="sb_publishable_Bl6csDnCJ5LIJsIsCafMYQ_5zwLTgvR"
+                lang="ru"
+                limit="6"></anubis-reviews>
         </div>
     </div>
 </section>
@@ -968,20 +902,7 @@ const i18n = {
         cabinet_badge: "Личный кабинет",
         cabinet_title: 'Скин, плащ и <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">аккаунт</span>',
         cabinet_desc: "Загрузите свой скин и плащ — отобразится в игре сразу после логина. Управление паролем и профилем здесь же.",
-        reviews_badge: "Что говорят игроки",
-        reviews_title: 'Нам доверяют <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">тысячи</span>',
-        review_1_text: "Одна из лучших сборок Forge 1.12.2, что я видел. IC2 + Thermal — стабильно, без лагов и без багов.",
-        review_1_role: "Технарь, 800+ часов на сервере",
-        review_2_text: "Админы реально отвечают за 5 минут. Помогают, не банят за глупые вопросы. Чувствую себя дома.",
-        review_2_role: "1.5 года на сервере",
-        review_3_text: "TPS стабильно держится 19.8–20. Чанки не висят, моды работают как должны. Сервер на действительно крутом железе.",
-        review_3_role: "Билдер крупных проектов",
-        review_4_text: "AE2 + автоматизация на этом сервере — мечта инженера. Можно строить заводы планетарного масштаба.",
-        review_4_role: "Любитель массовой автоматизации",
-        review_5_text: "Лаунчер реально one-click. Скачал, ввёл ник — играю. Никакой возни с Forge или папкой mods.",
-        review_5_role: "Только начал играть",
-        review_6_text: "Идеальный баланс между количеством модов и производительностью. Не перегружено, всё имеет смысл.",
-        review_6_role: "Тестирую модпаки 5 лет",
+        reviews_title: 'Что говорят <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">игроки</span>',
         faq_badge: "Часто спрашивают",
         faq_title: 'Ответы на <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">вопросы</span>',
         faq_q1: "Как начать играть?",
@@ -1047,20 +968,7 @@ const i18n = {
         cabinet_badge: "Особистий кабінет",
         cabinet_title: 'Скін, плащ і <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">акаунт</span>',
         cabinet_desc: "Завантаж свій скін та плащ — відобразяться в грі одразу після логіну. Керування паролем і профілем тут же.",
-        reviews_badge: "Що кажуть гравці",
-        reviews_title: 'Нам довіряють <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">тисячі</span>',
-        review_1_text: "Одна з найкращих збірок Forge 1.12.2, яку я бачив. IC2 + Thermal — стабільно, без лагів і без багів.",
-        review_1_role: "Технар, 800+ годин на сервері",
-        review_2_text: "Адміни реально відповідають за 5 хвилин. Допомагають, не банять за дурні питання. Почуваю себе вдома.",
-        review_2_role: "1.5 року на сервері",
-        review_3_text: "TPS стабільно тримається 19.8–20. Чанки не висять, моди працюють як треба. Сервер на справді крутому залізі.",
-        review_3_role: "Білдер великих проєктів",
-        review_4_text: "AE2 + автоматизація на цьому сервері — мрія інженера. Можна будувати заводи планетарного масштабу.",
-        review_4_role: "Любитель масової автоматизації",
-        review_5_text: "Лаунчер справді one-click. Завантажив, ввів нік — граю. Жодної мороки з Forge чи папкою mods.",
-        review_5_role: "Щойно почав грати",
-        review_6_text: "Ідеальний баланс між кількістю модів і продуктивністю. Не перевантажено, все має сенс.",
-        review_6_role: "Тестую модпаки 5 років",
+        reviews_title: 'Що кажуть <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">гравці</span>',
         faq_badge: "Часто питають",
         faq_title: 'Відповіді на <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">питання</span>',
         faq_q1: "Як почати грати?",
@@ -1126,20 +1034,7 @@ const i18n = {
         cabinet_badge: "Personal cabinet",
         cabinet_title: 'Skin, cape & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">account</span>',
         cabinet_desc: "Upload your skin and cape — they show up in-game the moment you sign in. Password and profile management lives here too.",
-        reviews_badge: "What players say",
-        reviews_title: 'Trusted by <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">thousands</span>',
-        review_1_text: "One of the best Forge 1.12.2 modpacks I've ever played. IC2 + Thermal — stable, no lag, no broken recipes.",
-        review_1_role: "Tech player, 800+ hours",
-        review_2_text: "Admins actually reply in 5 minutes. They help, don't ban for newbie questions. Feels like home.",
-        review_2_role: "1.5 years on the server",
-        review_3_text: "TPS stays at 19.8–20 rock solid. Chunks don't hang, mods just work. The hardware is genuinely good.",
-        review_3_role: "Mega-build engineer",
-        review_4_text: "AE2 + automation here is an engineer's dream. You can build factories on a planetary scale.",
-        review_4_role: "Mass-automation enthusiast",
-        review_5_text: "The launcher is truly one-click. Downloaded, typed my name — playing. No Forge setup, no mods folder.",
-        review_5_role: "Just started playing",
-        review_6_text: "Perfect balance between mod count and performance. Not bloated, every mod has a purpose.",
-        review_6_role: "Modpack reviewer, 5 years",
+        reviews_title: 'What <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">players</span> say',
         faq_badge: "Frequently asked",
         faq_title: 'Got <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">questions?</span>',
         faq_q1: "How do I start playing?",
@@ -1205,20 +1100,7 @@ const i18n = {
         cabinet_badge: "Persönliches Konto",
         cabinet_title: 'Skin, Umhang & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">Account</span>',
         cabinet_desc: "Lade deinen Skin und Umhang hoch — werden sofort nach dem Login im Spiel angezeigt. Passwort- und Profilverwaltung gibt es ebenfalls hier.",
-        reviews_badge: "Was Spieler sagen",
-        reviews_title: 'Vertraut von <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">Tausenden</span>',
-        review_1_text: "Eines der besten Forge 1.12.2 Modpacks, die ich je gespielt habe. IC2 + Thermal — stabil, keine Lags, keine Bugs.",
-        review_1_role: "Tech-Spieler, 800+ Stunden",
-        review_2_text: "Admins antworten tatsächlich in 5 Minuten. Sie helfen, bannen nicht für Anfängerfragen. Fühlt sich wie Zuhause an.",
-        review_2_role: "1,5 Jahre auf dem Server",
-        review_3_text: "TPS bleibt felsenfest bei 19,8–20. Chunks frieren nicht ein, Mods funktionieren einfach. Die Hardware ist wirklich gut.",
-        review_3_role: "Mega-Build-Ingenieur",
-        review_4_text: "AE2 + Automatisierung hier ist ein Ingenieurstraum. Man kann Fabriken in planetarer Größe bauen.",
-        review_4_role: "Massen-Automatisierungs-Fan",
-        review_5_text: "Der Launcher ist wirklich Ein-Klick. Heruntergeladen, Namen eingegeben — spiele. Kein Forge-Setup, kein Mods-Ordner.",
-        review_5_role: "Habe gerade angefangen",
-        review_6_text: "Perfekte Balance zwischen Mod-Anzahl und Leistung. Nicht überladen, jeder Mod hat einen Zweck.",
-        review_6_role: "Modpack-Reviewer, 5 Jahre",
+        reviews_title: 'Was <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">Spieler</span> sagen',
         faq_badge: "Häufig gefragt",
         faq_title: 'Hast du <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">Fragen?</span>',
         faq_q1: "Wie fange ich an zu spielen?",
@@ -1284,20 +1166,7 @@ const i18n = {
         cabinet_badge: "Panel gracza",
         cabinet_title: 'Skin, peleryna i <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">konto</span>',
         cabinet_desc: "Wgraj swój skin i pelerynę — pojawią się w grze zaraz po zalogowaniu. Zarządzanie hasłem i profilem również tutaj.",
-        reviews_badge: "Co mówią gracze",
-        reviews_title: 'Zaufali nam <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">tysiące</span>',
-        review_1_text: "Jeden z najlepszych modpacków Forge 1.12.2, w jakie grałem. IC2 + Thermal — stabilnie, bez lagów, bez bugów.",
-        review_1_role: "Techniczny gracz, 800+ godzin",
-        review_2_text: "Adminowie naprawdę odpowiadają w 5 minut. Pomagają, nie banują za pytania nowicjuszy. Czuję się jak w domu.",
-        review_2_role: "1,5 roku na serwerze",
-        review_3_text: "TPS stoi twardo na 19.8–20. Chunki nie zawieszają się, mody działają jak należy. Sprzęt naprawdę dobry.",
-        review_3_role: "Inżynier mega-budowli",
-        review_4_text: "AE2 + automatyzacja tutaj to marzenie inżyniera. Można budować fabryki o planetarnej skali.",
-        review_4_role: "Fan masowej automatyzacji",
-        review_5_text: "Launcher faktycznie one-click. Pobrałem, wpisałem nick — gram. Żadnego setupu Forge, żadnego folderu mods.",
-        review_5_role: "Dopiero zacząłem grać",
-        review_6_text: "Idealna równowaga między liczbą modów a wydajnością. Nic zbędnego, każdy mod ma cel.",
-        review_6_role: "Recenzent modpacków, 5 lat",
+        reviews_title: 'Co mówią <span class="text-transparent bg-clip-text bg-gradient-to-r from-egypt-400 to-violet-400">gracze</span>',
         faq_badge: "Często pytane",
         faq_title: 'Masz <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-egypt-400">pytania?</span>',
         faq_q1: "Jak zacząć grać?",
@@ -1343,7 +1212,7 @@ function applyLang(lang) {
     // Forward locale to both widgets. Site uses 'ua' for Ukrainian;
     // widgets expect 'uk'. Auth and cabinet share the same convention.
     const widgetLang = lang === 'ua' ? 'uk' : lang;
-    document.querySelectorAll('anubis-auth, anubis-cabinet, anubis-payments, anubis-download').forEach(el => {
+    document.querySelectorAll('anubis-auth, anubis-cabinet, anubis-payments, anubis-download, anubis-reviews').forEach(el => {
         el.setAttribute('lang', widgetLang);
     });
 }
