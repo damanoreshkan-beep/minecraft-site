@@ -15,14 +15,17 @@
     <meta name="twitter:image" content="img/anubis2.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // This config mirrors anubis-ds tokens.json (the canonical
+        // source of truth — see damanoreshkan-beep/anubis-ds). We
+        // keep it inline because the page uses Tailwind's CDN
+        // runtime build, which can't `require()` an npm preset.
+        // CSS variables and theme classes (.glass / .btn-glow /
+        // .gold-text / .card-hover) come from the DS over a <link>
+        // in <head>, so they always match this palette.
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        // Палитра подобрана под арт с Анубисом:
-                        // brand = пурпурно-фиолетовая аура (доминанта)
-                        // egypt = бирюзово-неоновое свечение египетских декораций
-                        // amber = тёплый акцент (факелы)
                         brand: {
                             50:  '#f5f3ff',
                             100: '#ede9fe',
@@ -77,6 +80,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" href="img/logo.jpg" type="image/jpeg">
+
+    <!-- Anubis design system — palette CSS variables (:root) and the
+         canonical .glass / .btn-glow / .gold-text / .card-hover classes.
+         tokens.json over in damanoreshkan-beep/anubis-ds is the single
+         source of truth shared between this page, the launcher, and
+         every Anubis widget. The Tailwind config below mirrors that
+         palette inline because we still use the CDN runtime build of
+         Tailwind on this page (no Node build step). -->
+    <link rel="stylesheet" href="https://damanoreshkan-beep.github.io/anubis-ds/variables.css">
+    <link rel="stylesheet" href="https://damanoreshkan-beep.github.io/anubis-ds/theme.css">
     <style>
         body { font-family: 'Inter', system-ui, sans-serif; }
 
@@ -88,23 +101,8 @@
             background-size: 60px 60px;
         }
 
-        /* Glass с фиолетовым оттенком */
-        .glass {
-            background: rgba(139,92,246,.05);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(139,92,246,.14);
-        }
-
-        .card-hover { transition: transform .3s, box-shadow .3s; }
-        .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(124,58,237,.25); }
-
-        .btn-glow { position:relative; overflow:hidden; }
-        .btn-glow::after {
-            content:''; position:absolute; inset:0;
-            background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
-            transform:translateX(-100%); transition:transform .5s;
-        }
-        .btn-glow:hover::after { transform:translateX(100%); }
+        /* .glass / .card-hover / .btn-glow now come from anubis-ds
+           theme.css (linked in <head>). Site-only classes stay below. */
 
         .fade-section { opacity:0; transform:translateY(30px); transition:opacity .7s,transform .7s; }
         .fade-section.visible { opacity:1; transform:translateY(0); }
@@ -145,14 +143,9 @@
         .lang-wrap:hover .lang-menu,
         .lang-wrap:focus-within .lang-menu { display:block; }
 
-        /* Класс называется gold-text по историческим причинам, но цвета теперь
-           пурпурно-бирюзовые — под ауру Анубиса. (Имя оставлено чтобы не править i18n.) */
-        .gold-text {
-            color: transparent;
-            background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #22d3ee 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
+        /* .gold-text now comes from anubis-ds theme.css. The page
+           still uses the legacy class name (historical reasons —
+           dropping it would mean re-flowing every i18n key). */
         .violet-gold-text {
             color: transparent;
             background: linear-gradient(135deg, #22d3ee 0%, #a855f7 50%, #fbbf24 100%);
